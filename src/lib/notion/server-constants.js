@@ -1,4 +1,5 @@
 // use commonjs so it can be required without transpiling
+require('dotenv').config()
 const path = require('path')
 
 const normalizeId = id => {
