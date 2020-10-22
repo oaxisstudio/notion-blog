@@ -1,5 +1,7 @@
 import ExtLink from './ext-link'
 
+import GitHub from '../components/svgs/github'
+
 export default () => (
   <>
     <footer>

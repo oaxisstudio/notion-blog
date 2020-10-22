@@ -63,7 +63,8 @@
 }
 
 .postPreview {
-  max-width: 600px;
+  width: 80%;
+  max-width: 1200px;
   margin: 10px auto;
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);
 }
@@ -124,7 +125,8 @@
 }
 
 .post {
-  max-width: calc(600px + 10%);
+  width: 80%;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 5%;
 }
