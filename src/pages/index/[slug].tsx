@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import fetch from 'node-fetch'
+import psl from 'psl'
 import { useRouter } from 'next/router'
 import Header from '../../components/header'
 import Heading from '../../components/heading'
@@ -228,6 +229,90 @@ const RenderPost = ({ post, redirect, preview }) => {
             )
           }
 
+          const isURL = str => {
+            var pattern = new RegExp(
+              '^(https?:\\/\\/)?' + // protocol
+              '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|' + // domain name
+              '((\\d{1,3}\\.){3}\\d{1,3}))' + // OR ip (v4) address
+              '(\\:\\d+)?(\\/[-a-z\\d%_.~+]*)*' + // port and path
+              '(\\?[;&a-z\\d%_.~+=-]*)?' + // query string
+                '(\\#[-a-z\\d_]*)?$',
+              'i'
+            ) // fragment locator
+            return !!pattern.test(str)
+          }
+
+          const extractHostname = url => {
+            let hostname
+            if (url.indexOf('//') > -1) {
+              hostname = url.split('/')[2]
+            } else {
+              hostname = url.split('/')[0]
+            }
+
+            hostname = hostname.split(':')[0]
+            hostname = hostname.split('?')[0]
+            return hostname
+          }
+
+          const renderBookmark = ({ link, title, description, format }) => {
+            const { bookmark_icon: icon, bookmark_cover: cover } = format
+            const newTitle = isURL(title)
+              ? psl.get(extractHostname(title))
+              : title
+            toRender.push(
+              <div className={blogStyles.bookmark}>
+                <div>
+                  <div style={{ display: 'flex' }}>
+                    <a
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={blogStyles.bookmarkContentsWrapper}
+                      href={link}
+                    >
+                      <div
+                        role="button"
+                        className={blogStyles.bookmarkContents}
+                      >
+                        <div className={blogStyles.bookmarkInfo}>
+                          <div className={blogStyles.bookmarkTitle}>
+                            {newTitle}
+                          </div>
+                          <div className={blogStyles.bookmarkDescription}>
+                            {description}
+                          </div>
+                          <div className={blogStyles.bookmarkLinkWrapper}>
+                            {icon ? (
+                              <img
+                                src={icon}
+                                className={blogStyles.bookmarkLinkIcon}
+                              />
+                            ) : null}
+                            <div className={blogStyles.bookmarkLink}>
+                              {link}
+                            </div>
+                          </div>
+                        </div>
+                        {cover ? (
+                          <div className={blogStyles.bookmarkCoverWrapper1}>
+                            <div className={blogStyles.bookmarkCoverWrapper2}>
+                              <div className={blogStyles.bookmarkCoverWrapper3}>
+                                <img
+                                  src={cover}
+                                  className={blogStyles.bookmarkCover}
+                                />
+                              </div>
+                            </div>
+                          </div>
+                        ) : null}
+                      </div>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            )
+          }
+
           switch (type) {
             case 'page':
             case 'divider':
@@ -331,6 +416,11 @@ const RenderPost = ({ post, redirect, preview }) => {
               break
             case 'sub_sub_header':
               renderHeading('h3')
+              break
+            case 'bookmark':
+              const { link, title, description } = properties
+              const { format = {} } = value
+              renderBookmark({ link, title, description, format })
               break
             case 'code': {
               if (properties.title) {
