@@ -9,7 +9,7 @@ const navItems: { label: string; page?: string; link?: string }[] = [
   { label: 'Blog', page: '/' },
 ]
 
-const ogImageUrl = 'https://notion-blog.now.sh/og-image.png'
+const ogImageUrl = 'https://blog.yaruwayo.com/blog_yaruwayo_og-image.png'
 
 export default ({ titlePre = '' }) => {
   const { pathname } = useRouter()
@@ -17,12 +17,12 @@ export default ({ titlePre = '' }) => {
   return (
     <header className={styles.header}>
       <Head>
-        <title>{titlePre ? `${titlePre} |` : ''} My Notion Blog</title>
+        <title>{titlePre ? `${titlePre} |` : ''} 日々のやるわよ</title>
         <meta
           name="description"
-          content="An example Next.js site using Notion for the blog"
+          content="プログラミング学習・個人開発の作業記録がメインのブログです"
         />
-        <meta name="og:title" content="My Notion Blog" />
+        <meta name="og:title" content="日々のやるわよ" />
         <meta property="og:image" content={ogImageUrl} />
         <meta name="twitter:site" content="@_ijjk" />
         <meta name="twitter:card" content="summary_large_image" />

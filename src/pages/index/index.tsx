@@ -63,7 +63,7 @@ export default ({ posts = [], preview }) => {
         </div>
       )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
-        <h1>
+        <h1 className="bold">
           日々のやるわよ by <a href="https://twitter.com/ukaprog">@ukaprog</a>
         </h1>
         {posts.length === 0 && (
