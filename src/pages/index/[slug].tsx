@@ -453,11 +453,9 @@ const RenderPost = ({ post, redirect, preview }) => {
             case 'quote': {
               if (properties.title) {
                 toRender.push(
-                  React.createElement(
-                    components.blockquote,
-                    { key: id },
-                    properties.title
-                  )
+                  <div className={blogStyles.quote}>
+                    <p>{properties.title}</p>
+                  </div>
                 )
               }
               break
