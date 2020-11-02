@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import Header from '../../components/header'
+import Footer from '../../components/footer'
 
 import blogStyles from '../../styles/blog.module.css'
 import sharedStyles from '../../styles/shared.module.css'
@@ -98,6 +99,8 @@ export default ({ posts = [], preview }) => {
           )
         })}
       </div>
+
+      <Footer />
     </>
   )
 }

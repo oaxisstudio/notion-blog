@@ -63,8 +63,8 @@
 }
 
 .postPreview {
-  width: 80%;
-  max-width: 900px;
+  width: 90%;
+  max-width: calc(600px + 10%);
   margin: 10px auto;
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);
 }
@@ -131,8 +131,8 @@
 }
 
 .post {
-  width: 80%;
-  max-width: 900px;
+  width: 90%;
+  max-width: calc(600px + 10%);
   margin: 0 auto;
   padding: 5%;
 }
