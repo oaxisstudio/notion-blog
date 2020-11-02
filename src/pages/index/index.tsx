@@ -65,7 +65,7 @@ export default ({ posts = [], preview }) => {
         </div>
       )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
-        <img id="topImage" src="{topImageUrl}" alt="日々のやるわよ" />
+        <img id="topImage" src={topImageUrl} alt="日々のやるわよ" />
         {posts.length === 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
         )}
