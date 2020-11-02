@@ -4,9 +4,24 @@ import ExtLink from './ext-link'
 import { useRouter } from 'next/router'
 import styles from '../styles/header.module.css'
 
-const navItems: { label: string; page?: string; link?: string }[] = [
+const navItems: {
+  label: string
+  page?: string
+  link?: string
+  iconClass?: string
+}[] = [
   // { label: 'Home', page: '/home' },
-  { label: 'Blog', page: '/' },
+  { label: 'Log', page: '/', iconClass: 'typcn typcn-document-text' },
+  {
+    label: 'playground',
+    link: 'https://yaruwayo.herokuapp.com/',
+    iconClass: 'typcn typcn-spanner',
+  },
+  {
+    label: 'Twitter',
+    link: 'https://twitter.com/ukaprog',
+    iconClass: 'typcn typcn-social-twitter',
+  },
 ]
 
 const ogImageUrl = 'https://blog.yaruwayo.com/blog_yaruwayo_og-image.png'
@@ -27,18 +42,35 @@ export default ({ titlePre = '' }) => {
         <meta name="twitter:site" content="@_ijjk" />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:image" content={ogImageUrl} />
+        <link
+          href="https://fonts.googleapis.com/css2?family=Monofett&display=swap"
+          rel="stylesheet"
+        ></link>
+        <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/typicons/2.0.9/typicons.min.css"
+          rel="stylesheet"
+        ></link>
       </Head>
+      <div>
+        <h1 className="siteName">
+          <Link href="/">yaruwayo.com</Link>
+        </h1>
+      </div>
       <ul>
-        {navItems.map(({ label, page, link }) => (
+        {navItems.map(({ label, page, link, iconClass }) => (
           <li key={label}>
             {page ? (
               <Link href={page}>
                 <a className={pathname === page ? 'active' : undefined}>
+                  <span className={iconClass}></span>
                   {label}
                 </a>
               </Link>
             ) : (
-              <ExtLink href={link}>{label}</ExtLink>
+              <ExtLink href={link}>
+                <span className={iconClass}></span>
+                {label}
+              </ExtLink>
             )}
           </li>
         ))}

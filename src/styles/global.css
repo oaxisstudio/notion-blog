@@ -292,6 +292,12 @@ h2 {
   color: var(--accents-3);
 }
 
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.6rem;
+  }
+}
+
 .video {
   width: 1080px;
   max-width: calc(100vw - 40px);
@@ -326,6 +332,7 @@ code {
   padding: 0.2rem;
   border-radius: var(--radius);
   font-family: var(--font-mono);
+  word-break: break-all;
 }
 
 .slice {

@@ -13,6 +13,8 @@ import { textBlock } from '../../lib/notion/renderers'
 import getNotionUsers from '../../lib/notion/getNotionUsers'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
 
+const topImageUrl = 'https://blog.yaruwayo.com/blog_yaruwayo_og-image.png'
+
 export async function getStaticProps({ preview }) {
   const postsTable = await getBlogIndex()
 
@@ -50,7 +52,7 @@ export async function getStaticProps({ preview }) {
 export default ({ posts = [], preview }) => {
   return (
     <>
-      <Header titlePre="Blog" />
+      <Header titlePre="Log" />
       {preview && (
         <div className={blogStyles.previewAlertContainer}>
           <div className={blogStyles.previewAlert}>
@@ -63,9 +65,7 @@ export default ({ posts = [], preview }) => {
         </div>
       )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
-        <h1 className="bold">
-          日々のやるわよ by <a href="https://twitter.com/ukaprog">@ukaprog</a>
-        </h1>
+        <img id="topImage" src="{topImageUrl}" alt="日々のやるわよ" />
         {posts.length === 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
         )}
@@ -89,8 +89,7 @@ export default ({ posts = [], preview }) => {
                 <div className="posted">Posted: {getDateStr(post.Date)}</div>
               )}
               <p>
-                {(!post.preview || post.preview.length === 0) &&
-                  'No preview available'}
+                {(!post.preview || post.preview.length === 0) && ''}
                 {(post.preview || []).map((block, idx) =>
                   textBlock(block, true, `${post.Slug}${idx}`)
                 )}

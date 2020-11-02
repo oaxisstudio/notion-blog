@@ -69,6 +69,12 @@
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);
 }
 
+@media (max-width: 600px) {
+  .postPreview {
+    width: 95%;
+  }
+}
+
 .postPreview:last-child {
   border-bottom: none;
 }
@@ -84,7 +90,7 @@
 
 .post :global(h2),
 .post :global(h3) {
-  margin: 3rem 0 1.5rem 0;
+  margin: 1rem 0 1rem 0;
 }
 
 .post :global(video),
@@ -129,6 +135,12 @@
   max-width: 900px;
   margin: 0 auto;
   padding: 5%;
+}
+
+@media (max-width: 600px) {
+  .post {
+    width: 95%;
+  }
 }
 
 .post :global(hr) {
