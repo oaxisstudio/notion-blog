@@ -280,7 +280,7 @@ mark {
 
 h1 {
   margin: var(--gap-double) 0 calc(0.5 * var(--gap)) 0;
-  font-size: 2.25rem;
+  font-size: 1.6rem;
   font-weight: 800;
   letter-spacing: -0.05rem;
 }
@@ -289,13 +289,6 @@ h2 {
   font-weight: 300;
   font-size: 1.25rem;
   letter-spacing: -0.02rem;
-  color: var(--accents-3);
-}
-
-@media (max-width: 600px) {
-  h1 {
-    font-size: 1.6rem;
-  }
 }
 
 .video {

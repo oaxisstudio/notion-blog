@@ -78,10 +78,9 @@
 .postPreview:last-child {
   border-bottom: none;
 }
-
 .postPreview h3,
 .post h1 {
-  margin-bottom: 0;
+  margin-bottom: 5px;
 }
 
 .post h1 {
@@ -272,4 +271,35 @@
 
 .quote > p {
   color: #999;
+}
+
+.tagsWrapper {
+  max-width: 600px;
+  margin: 1em auto 5px auto;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  max-width: 600px;
+  margin: 0 auto 2em auto;
+}
+
+.tag {
+  padding: 2px 5px;
+  margin-right: 5px;
+  border-radius: 3px;
+  background-color: #eeeeee;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.tag:hover {
+  background-color: #008fa870;
+}
+
+.postInfo {
+  display: flex;
+  justify-content: space-between;
 }

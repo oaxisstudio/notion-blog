@@ -2,6 +2,10 @@ export const getBlogLink = (slug: string) => {
   return `/index/${slug}`
 }
 
+export const getTagLink = (tag: string) => {
+  return `/index/tag/${tag}`
+}
+
 export const getDateStr = date => {
   return new Date(date).toLocaleString('en-US', {
     month: 'long',

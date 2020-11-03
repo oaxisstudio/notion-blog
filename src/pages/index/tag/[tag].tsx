@@ -1,25 +1,23 @@
 import Link from 'next/link'
-import Header from '../../components/header'
-import Footer from '../../components/footer'
+import Header from '../../../components/header'
 
-import blogStyles from '../../styles/blog.module.css'
-import sharedStyles from '../../styles/shared.module.css'
+import blogStyles from '../../../styles/blog.module.css'
+import sharedStyles from '../../../styles/shared.module.css'
 
 import {
   getBlogLink,
   getDateStr,
   postIsPublished,
   getTagLink,
-} from '../../lib/blog-helpers'
-import { textBlock } from '../../lib/notion/renderers'
-import getNotionUsers from '../../lib/notion/getNotionUsers'
-import getBlogIndex from '../../lib/notion/getBlogIndex'
+} from '../../../lib/blog-helpers'
+import { textBlock } from '../../../lib/notion/renderers'
+import getNotionUsers from '../../../lib/notion/getNotionUsers'
+import getBlogIndex from '../../../lib/notion/getBlogIndex'
 
-export async function getStaticProps({ preview }) {
+export async function getStaticProps({ params: { tag }, preview }) {
   const postsTable = await getBlogIndex()
 
   const authorsToGet: Set<string> = new Set()
-  let allTags: string[] = []
   const posts: any[] = Object.keys(postsTable)
     .map(slug => {
       const post = postsTable[slug]
@@ -31,12 +29,11 @@ export async function getStaticProps({ preview }) {
       for (const author of post.Authors) {
         authorsToGet.add(author)
       }
-      allTags = allTags.concat(post.Tags)
+      if (post.Tags.indexOf(tag) === -1) return null
       return post
     })
     .filter(Boolean)
 
-  allTags = allTags.filter((tag, index, orig) => orig.indexOf(tag) === index)
   const { users } = await getNotionUsers([...authorsToGet])
 
   posts.map(post => {
@@ -47,16 +44,36 @@ export async function getStaticProps({ preview }) {
     props: {
       preview: preview || false,
       posts,
-      allTags,
+      tag,
     },
     unstable_revalidate: 10,
   }
 }
 
-export default ({ posts = [], allTags = [], preview }) => {
+// Return our list of blog posts to prerender
+export async function getStaticPaths() {
+  const postsTable = await getBlogIndex()
+  let allTags: string[] = []
+  Object.keys(postsTable).forEach(slug => {
+    const post = postsTable[slug]
+    // remove draft posts in production
+    if (!postIsPublished(post)) {
+      return null
+    }
+    allTags = allTags.concat(post.Tags)
+  })
+  allTags = allTags.filter((tag, index, orig) => orig.indexOf(tag) === index)
+
+  return {
+    paths: allTags.map(tag => getTagLink(tag)),
+    fallback: true,
+  }
+}
+
+export default ({ tag, posts = [], preview }) => {
   return (
     <>
-      <Header titlePre="Log" />
+      <Header titlePre="Blog" />
       {preview && (
         <div className={blogStyles.previewAlertContainer}>
           <div className={blogStyles.previewAlert}>
@@ -69,26 +86,22 @@ export default ({ posts = [], allTags = [], preview }) => {
         </div>
       )}
       <div className={`${sharedStyles.layout} ${blogStyles.blogIndex}`}>
+        <h1>カテゴリ： {tag} </h1>
         {posts.length === 0 && (
           <p className={blogStyles.noPosts}>There are no posts yet</p>
-        )}
-        {posts.length > 0 && allTags.length > 0 && (
-          <>
-            <div className={blogStyles.tags}>
-              {allTags &&
-                allTags.length > 0 &&
-                allTags.map(tag => (
-                  <Link href="/index/tag/[tag]" as={getTagLink(tag)}>
-                    <span className={blogStyles.tag}>{tag}</span>
-                  </Link>
-                ))}
-            </div>
-          </>
         )}
         {posts.map(post => {
           return (
             <div className={blogStyles.postPreview} key={post.Slug}>
-              <h3 className={blogStyles.postTitle}>
+              {post.cover ? (
+                <img
+                  src={`/api/asset?assetUrl=${encodeURIComponent(
+                    post.cover.url as any
+                  )}&blockId=${post.cover.blockId}`}
+                  className={blogStyles.postPreviewCover}
+                />
+              ) : null}
+              <h3>
                 <Link href="/index/[slug]" as={getBlogLink(post.Slug)}>
                   <div className={blogStyles.titleContainer}>
                     {!post.Published && (
@@ -98,26 +111,22 @@ export default ({ posts = [], allTags = [], preview }) => {
                   </div>
                 </Link>
               </h3>
-              <div className={blogStyles.postInfo}>
-                <div className={blogStyles.postTags}>
-                  {post.Tags &&
-                    post.Tags.length > 0 &&
-                    post.Tags.map(tag => (
-                      <Link href="/index/tag/[tag]" as={getTagLink(tag)}>
-                        <span className={blogStyles.tag}>{tag}</span>
-                      </Link>
-                    ))}
-                </div>
-                <div className={blogStyles.postDate}>
-                  {post.Date && (
-                    <div className="posted">
-                      投稿日: {getDateStr(post.Date)}
-                    </div>
-                  )}
-                </div>
-              </div>
+              {post.Tags &&
+                post.Tags.length > 0 &&
+                post.Tags.map(tag => (
+                  <Link href="/index/tag/[tag]" as={getTagLink(tag)}>
+                    <span className={blogStyles.tag}>{tag}</span>
+                  </Link>
+                ))}
+              {post.Authors.length > 0 && (
+                <div className="authors">By: {post.Authors.join(' ')}</div>
+              )}
+              {post.Date && (
+                <div className="posted">Posted: {getDateStr(post.Date)}</div>
+              )}
               <p>
-                {(!post.preview || post.preview.length === 0) && ''}
+                {(!post.preview || post.preview.length === 0) &&
+                  'No preview available'}
                 {(post.preview || []).map((block, idx) =>
                   textBlock(block, true, `${post.Slug}${idx}`)
                 )}
@@ -126,8 +135,6 @@ export default ({ posts = [], allTags = [], preview }) => {
           )
         })}
       </div>
-
-      <Footer />
     </>
   )
 }
