@@ -12,7 +12,7 @@ import getPageData from '../../lib/notion/getPageData'
 import React, { CSSProperties, useEffect } from 'react'
 import getBlogIndex from '../../lib/notion/getBlogIndex'
 import getNotionUsers from '../../lib/notion/getNotionUsers'
-import { getBlogLink, getDateStr } from '../../lib/blog-helpers'
+import { getBlogLink, getDateStr, getTagLink } from '../../lib/blog-helpers'
 import Footer from '../../components/footer'
 
 // Get the data for each blog post
@@ -157,9 +157,20 @@ const RenderPost = ({ post, redirect, preview }) => {
         {post.Authors.length > 0 && (
           <div className="authors">By: {post.Authors.join(' ')}</div>
         )}
-        {post.Date && (
-          <div className="posted">Posted: {getDateStr(post.Date)}</div>
-        )}
+        <div className={blogStyles.postInfo}>
+          <div className={blogStyles.postTags}>
+            {post.Tags &&
+              post.Tags.length > 0 &&
+              post.Tags.map(tag => (
+                <Link href="/index/tag/[tag]" as={getTagLink(tag)}>
+                  <span className={blogStyles.tag}>{tag}</span>
+                </Link>
+              ))}
+          </div>
+          {post.Date && (
+            <div className="posted">Posted: {getDateStr(post.Date)}</div>
+          )}
+        </div>
 
         <hr />
 
@@ -287,6 +298,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                               <img
                                 src={icon}
                                 className={blogStyles.bookmarkLinkIcon}
+                                alt={''}
                               />
                             ) : null}
                             <div className={blogStyles.bookmarkLink}>
@@ -301,6 +313,7 @@ const RenderPost = ({ post, redirect, preview }) => {
                                 <img
                                   src={cover}
                                   className={blogStyles.bookmarkCover}
+                                  alt={''}
                                 />
                               </div>
                             </div>

@@ -92,7 +92,6 @@ export default async function loadTable(collectionBlock: any, isPosts = false) {
 
     // get tags
     row.Tags = row.Tags ? row.Tags.split(',') : []
-    console.log({ row })
 
     const key = row.Slug
     if (isPosts && !key) continue
