@@ -24,9 +24,9 @@ const navItems: {
   },
 ]
 
-const ogImageUrl = 'https://blog.yaruwayo.com/blog_yaruwayo_og-image.png'
+const ogImageDefaultUrl = 'https://blog.yaruwayo.com/blog_yaruwayo_og-image.png'
 
-export default ({ titlePre = '' }) => {
+export default ({ titlePre = '', ogImageUrl = undefined }) => {
   const { pathname } = useRouter()
 
   return (
@@ -38,10 +38,10 @@ export default ({ titlePre = '' }) => {
           content="プログラミング学習・個人開発の作業記録がメインのブログです"
         />
         <meta name="og:title" content="日々のやるわよ" />
-        <meta property="og:image" content={ogImageUrl} />
+        <meta property="og:image" content={ogImageUrl || ogImageDefaultUrl} />
         <meta name="twitter:site" content="@_ijjk" />
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:image" content={ogImageUrl} />
+        <meta name="twitter:image" content={ogImageUrl || ogImageDefaultUrl} />
         <link
           href="https://fonts.googleapis.com/css2?family=Monofett&display=swap"
           rel="stylesheet"

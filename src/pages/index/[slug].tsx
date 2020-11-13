@@ -137,10 +137,12 @@ const RenderPost = ({ post, redirect, preview }) => {
       </div>
     )
   }
+  // OGP画像URLの取得
+  const ogImageURL = post.Ogp ? post.Ogp : undefined
 
   return (
     <>
-      <Header titlePre={post.Page} />
+      <Header titlePre={post.Page} ogImageUrl={ogImageURL} />
       {preview && (
         <div className={blogStyles.previewAlertContainer}>
           <div className={blogStyles.previewAlert}>
